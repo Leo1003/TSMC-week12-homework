@@ -1,3 +1,5 @@
+use std::cmp::min;
+
 const SET_5_PRICE: f64 = 8.0 * 5.0 * 0.75;
 const SET_4_PRICE: f64 = 8.0 * 4.0 * 0.80;
 const SET_3_PRICE: f64 = 8.0 * 3.0 * 0.90;
@@ -14,11 +16,17 @@ pub fn price(books: &[u8]) -> f64 {
         }
     }
 
-    let s5 = get_set(&mut book_type_count, 5);
-    let s4 = get_set(&mut book_type_count, 4);
-    let s3 = get_set(&mut book_type_count, 3);
+    let mut s5 = get_set(&mut book_type_count, 5);
+    let mut s4 = get_set(&mut book_type_count, 4);
+    let mut s3 = get_set(&mut book_type_count, 3);
     let s2 = get_set(&mut book_type_count, 2);
     let s1 = get_set(&mut book_type_count, 1);
+
+    // Handle edge cases
+    let s4_pair = min(s3, s5);
+    s3 -= s4_pair;
+    s5 -= s4_pair;
+    s4 += s4_pair * 2;
 
     total += SET_5_PRICE * s5 as f64;
     total += SET_4_PRICE * s4 as f64;
@@ -37,10 +45,7 @@ fn get_set(book_type_count: &mut [usize], set_type: usize) -> usize {
     let mut set_cnt = 0;
 
     while book_type_count.iter().copied().filter(|c| *c > 0).count() >= set_type {
-        let mut d: Vec<&mut usize> = book_type_count
-            .iter_mut()
-            .filter(|c| **c > 0)
-            .collect();
+        let mut d: Vec<&mut usize> = book_type_count.iter_mut().filter(|c| **c > 0).collect();
 
         d.sort();
         d.truncate(set_type);
