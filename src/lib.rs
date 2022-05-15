@@ -1,5 +1,11 @@
 pub fn price(books: &[u8]) -> f64 {
-    0.0
+    let mut total = 0.0;
+
+    for id in books {
+        total += 8.0;
+    }
+
+    total
 }
 
 #[cfg(test)]
