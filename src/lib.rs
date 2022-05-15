@@ -76,4 +76,12 @@ mod tests {
         assert_eq!(25.6, price(&[0, 1, 2, 4]));
         assert_eq!(30.0, price(&[0, 1, 2, 3, 4]));
     }
+
+    #[test]
+    fn several_discounts() {
+        assert_eq!(23.2, price(&[0, 0, 1]));
+        assert_eq!(30.4, price(&[0, 0, 1, 1]));
+        assert_eq!(40.8, price(&[0, 0, 1, 2, 2, 3]));
+        assert_eq!(38.0, price(&[0, 1, 1, 2, 3, 4]));
+    }
 }
